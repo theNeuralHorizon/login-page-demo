@@ -13,7 +13,7 @@ This is a minimal Login + Profile user flow built with React. It simulates user 
 
 ##  Demo Preview
 
-![Login Flow Screenshot]![image](https://github.com/user-attachments/assets/e251fb88-1903-442f-a8a9-f3102b9a70c0)![image](https://github.com/user-attachments/assets/20c4eeb9-46ac-44de-9ead-8af9ed10295a)
+![image](https://github.com/user-attachments/assets/e251fb88-1903-442f-a8a9-f3102b9a70c0)![image](https://github.com/user-attachments/assets/20c4eeb9-46ac-44de-9ead-8af9ed10295a)
 
 
 
