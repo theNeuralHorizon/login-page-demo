@@ -1,6 +1,6 @@
-# 🔐 React Login + Profile Flow (MVP)
+# React Login + Profile Flow (MVP)
 
-This is a minimal **Login + Profile** user flow built with React. It simulates user authentication and demonstrates how to:
+This is a minimal Login + Profile user flow built with React. It simulates user authentication and demonstrates how to:
 
 - Build a login form with validation
 - Store a fake token on login
@@ -11,7 +11,7 @@ This is a minimal **Login + Profile** user flow built with React. It simulates u
 
 ---
 
-## 📸 Demo Preview
+##  Demo Preview
 
 ![Login Flow Screenshot]![image](https://github.com/user-attachments/assets/e251fb88-1903-442f-a8a9-f3102b9a70c0)![image](https://github.com/user-attachments/assets/20c4eeb9-46ac-44de-9ead-8af9ed10295a)
 
@@ -19,19 +19,19 @@ This is a minimal **Login + Profile** user flow built with React. It simulates u
 
 ---
 
-## 🚀 Features
+## Features
 
-✅ Clean login page with email/password  
-✅ Show/hide password toggle  
-✅ Fake authentication logic  
-✅ Token stored in `localStorage`  
-✅ Protected `/profile` route  
-✅ Simulated profile API  
-✅ Logout flow  
+Clean login page with email/password  
+Show/hide password toggle  
+Fake authentication logic  
+Token stored in `localStorage`  
+Protected `/profile` route  
+Simulated profile API  
+Logout flow  
 
 ---
 
-## 🏁 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 
