@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -6,119 +6,147 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [showEmailError, setShowEmailError] = useState(false);
-  const [showPasswordError, setShowPasswordError] = useState(false);
-  const [emailValid, setEmailValid] = useState(true);
-  const [passwordValid, setPasswordValid] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [formError, setFormError] = useState("");
 
-  const handleLogin = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isFormValid = email.trim() !== "" && password.trim() !== "";
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) setEmail(savedEmail);
+  }, []);
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (isLoading) return;
+
+    setEmailError("");
+    setPasswordError("");
+    setFormError("");
+
+    if (!email.trim()) {
+      setEmailError("Email is required.");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("Enter a valid email address.");
+      return;
+    }
+    if (!password.trim()) {
+      setPasswordError("Password is required.");
+      return;
+    }
+
     setIsLoading(true);
-    setTimeout(() => {
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // mock delay
+
       if (email === "admin@gmail.com" && password === "admin") {
+        if (rememberMe) localStorage.setItem("rememberedEmail", email);
+        else localStorage.removeItem("rememberedEmail");
+
         localStorage.setItem("token", "mock-token-123");
         navigate("/profile");
       } else {
-        setShowError(true);
-        setShowEmailError(true);
-        setShowPasswordError(true);
-        setEmailError("Invalid email or password.");
-        setPasswordError("Invalid email or password.");
-        setEmailValid(false);
-        setPasswordValid(false);
-        setTimeout(() => {
-          setShowError(false);
-        }, 3000);
+        setFormError("Invalid email or password.");
       }
+    } catch (err) {
+      setFormError("Server error. Please try again later.");
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "400px", margin: "auto" }}>
+    <form
+      onSubmit={handleLogin}
+      style={{
+        padding: "2rem",
+        maxWidth: "400px",
+        margin: "auto",
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.75rem",
+      }}
+    >
       <h2>Login</h2>
 
       <input
+        autoFocus
         type="email"
         placeholder="Email"
         value={email}
+        onChange={(e) => setEmail(e.target.value)}
         style={{
-          border: emailValid ? "1px solid #ccc" : "1px solid red",
-          marginBottom: "0.5rem",
-          width: "100%",
           padding: "0.5rem",
-        }}
-        onChange={(e) => {
-          setEmail(e.target.value);
-          setEmailValid(true);
-          setShowEmailError(false);
+          border: emailError ? "1px solid red" : "1px solid #ccc",
         }}
       />
-      {showEmailError && (
-        <p style={{ color: "red", marginTop: "-8px", marginBottom: "0.5rem" }}>
-          {emailError}
-        </p>
-      )}
+      {emailError && <p style={{ color: "red" }}>{emailError}</p>}
 
       <input
         type={showPassword ? "text" : "password"}
         placeholder="Password"
         value={password}
+        onChange={(e) => setPassword(e.target.value)}
         style={{
-          border: passwordValid ? "1px solid #ccc" : "1px solid red",
-          marginBottom: "0.5rem",
-          width: "100%",
           padding: "0.5rem",
-        }}
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setPasswordValid(true);
-          setShowPasswordError(false);
+          border: passwordError ? "1px solid red" : "1px solid #ccc",
         }}
       />
-      {showPasswordError && (
-        <p style={{ color: "red", marginTop: "-8px", marginBottom: "0.5rem" }}>
-          {passwordError}
-        </p>
-      )}
+      {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
 
-      <div style={{ marginBottom: "1rem" }}>
-        <label>
-          <input
-            type="checkbox"
-            checked={showPassword}
-            onChange={() => setShowPassword(!showPassword)}
-            style={{ marginRight: "0.5rem" }}
-          />
-          Show Password
-        </label>
-      </div>
+      <label style={{ display: "flex", alignItems: "center" }}>
+        <input
+          type="checkbox"
+          checked={showPassword}
+          onChange={() => setShowPassword(!showPassword)}
+        />
+        <span style={{ marginLeft: "0.5rem" }}>Show Password</span>
+      </label>
+
+      <label style={{ display: "flex", alignItems: "center" }}>
+        <input
+          type="checkbox"
+          checked={rememberMe}
+          onChange={() => setRememberMe(!rememberMe)}
+        />
+        <span style={{ marginLeft: "0.5rem" }}>Remember Me</span>
+      </label>
 
       <button
-        onClick={handleLogin}
-        disabled={isLoading}
+        type="submit"
+        disabled={!isFormValid || isLoading}
         style={{
-          width: "100%",
           padding: "0.75rem",
-          backgroundColor: "#007bff",
+          backgroundColor: isFormValid ? "#007bff" : "#ccc",
           color: "white",
           border: "none",
-          cursor: "pointer",
+          cursor: isFormValid ? "pointer" : "not-allowed",
         }}
       >
         {isLoading ? "Logging in..." : "Login"}
       </button>
 
-      {showError && (
-        <p style={{ color: "red", marginTop: "1rem" }}>
-          Invalid email or password.
-        </p>
-      )}
-    </div>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <a href="/forgot-password">Forgot Password?</a>
+        <a href="/signup">Sign Up</a>
+      </div>
+
+      {formError && <p style={{ color: "red" }}>{formError}</p>}
+    </form>
   );
 }
 
