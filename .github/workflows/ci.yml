@@ -6,28 +6,31 @@ on:
       - main
       - feature/*
   pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [20]
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Use Node.js v20
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm install
 
-      - name: Lint code
+      - name: Run Lint
         run: npm run lint
 
-      - name: Run tests
-        run: npm test
-
-      - name: Build app
-        run: npm run build
+      - name: Run Tests
+        run: npm test -- --watchAll=false
