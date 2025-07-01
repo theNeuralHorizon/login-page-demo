@@ -9,5 +9,5 @@ test("renders login page title", () => {
       <Login />
     </MemoryRouter>
   );
-  expect(screen.getByText(/login page/i)).toBeInTheDocument();
+  expect(screen.getByText(/Login Page/i)).toBeInTheDocument();
 });
