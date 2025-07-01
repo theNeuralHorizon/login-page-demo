@@ -1,7 +1,7 @@
 import React from "react";
 
-const clientId = "YOUR_COGNITO_CLIENT_ID"; // replace this manually
-const domain = "https://auth-demo.auth.eu-north-1.amazoncognito.com";
+const clientId = "3ei4p15ensv662vs08ioklnnkq";
+const domain = "https://eu-north-1tyieklhfi.auth.eu-north-1.amazoncognito.com";
 
 const Login = () => {
   const handleLogin = () => {
