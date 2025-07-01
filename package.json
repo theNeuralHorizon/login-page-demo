@@ -13,14 +13,11 @@
     "react-dom": "^19.1.0",
     "react-oidc-context": "^3.3.0",
     "react-router-dom": "^7.6.3",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^0.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "lint": "eslint ./src --ext .js,.jsx"
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [

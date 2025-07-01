@@ -1,32 +1,33 @@
-name: CI
+name: build-and-test
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - feature/*
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Use Node.js v20
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run lint
+      - name: Lint code
         run: npm run lint
 
       - name: Run tests
-        run: npm test -- --watchAll=false
+        run: npm test
 
-      - name: Build project
+      - name: Build app
         run: npm run build
