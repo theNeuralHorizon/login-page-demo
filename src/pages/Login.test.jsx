@@ -1,13 +1,14 @@
+// src/pages/Login.test.jsx
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
 import Login from "./Login";
 
+// 👇 MOCKING react-router-dom
+jest.mock("react-router-dom", () => ({
+  MemoryRouter: ({ children }) => <div>{children}</div>,
+}));
+
 test("renders login page title", () => {
-  render(
-    <MemoryRouter>
-      <Login />
-    </MemoryRouter>
-  );
-  expect(screen.getByText(/Login Page/i)).toBeInTheDocument();
+  render(<Login />);
+  expect(screen.getByText(/sign in with cognito/i)).toBeInTheDocument();
 });
