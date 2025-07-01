@@ -1,17 +1,14 @@
 {
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react"],
   "env": {
     "browser": true,
     "es2021": true,
     "jest": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
-  "plugins": ["react"],
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "ecmaVersion": 12,
     "sourceType": "module"
-  },
-  "rules": {
-    "react/prop-types": "off"
   },
   "settings": {
     "react": {
