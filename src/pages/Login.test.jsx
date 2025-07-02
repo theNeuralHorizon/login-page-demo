@@ -1,14 +1,17 @@
-// src/pages/Login.test.jsx
 import React from "react";
+import PropTypes from "prop-types";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import Login from "./Login";
 
-// 👇 MOCKING react-router-dom
-jest.mock("react-router-dom", () => ({
-  MemoryRouter: ({ children }) => <div>{children}</div>,
-}));
+// 🧩 Custom wrapper for routing context
+const Wrapper = ({ children }) => <MemoryRouter>{children}</MemoryRouter>;
+Wrapper.propTypes = {
+  children: PropTypes.node,
+};
 
 test("renders login page title", () => {
-  render(<Login />);
-  expect(screen.getByText(/sign in with cognito/i)).toBeInTheDocument();
+  render(<Login />, { wrapper: Wrapper });
+  const title = screen.getByText(/login page/i);
+  expect(title).toBeInTheDocument();
 });
