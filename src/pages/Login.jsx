@@ -1,4 +1,3 @@
-/* global process */
 import React from "react";
 
 const CLIENT_ID = process.env.REACT_APP_COGNITO_CLIENT_ID;
