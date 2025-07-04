@@ -8,15 +8,13 @@ const TOKEN_KEY = "access_token";
 
 function App() {
   return (
-    <>
+    <Router>
       <AuthHandler tokenKey={TOKEN_KEY} />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/profile" element={<Profile tokenKey={TOKEN_KEY} />} />
-        </Routes>
-      </Router>
-    </>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/profile" element={<Profile tokenKey={TOKEN_KEY} />} />
+      </Routes>
+    </Router>
   );
 }
 

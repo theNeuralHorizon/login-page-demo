@@ -14,5 +14,10 @@
     "react": {
       "version": "detect"
     }
+  },
+  "globals": {
+    "process": "readonly",
+    "module": "readonly",
+    "require": "readonly"
   }
 }
