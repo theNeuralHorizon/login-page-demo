@@ -1,41 +1,43 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Profile({ tokenKey = "access_token" }) {
-  const [profile, setProfile] = useState(null);
+function Profile() {
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      setError("No access token found. Please log in.");
-      setLoading(false);
-      return;
-    }
     axios
-      .get("/api/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get("/api/user", { withCredentials: true })
       .then((res) => {
-        setProfile(res.data.user || {});
+        setUser(res.data);
         setLoading(false);
       })
       .catch((err) => {
-        setError(
-          "Failed to load profile: " +
-            (err.response?.data?.error || err.message)
-        );
+        if (err.response?.status === 401) {
+          navigate("/"); // Redirect to login if not authenticated
+        } else {
+          setError(
+            "Failed to load profile: " +
+              (err.response?.data?.error || err.message)
+          );
+        }
         setLoading(false);
       });
-  }, [tokenKey]);
+  }, [navigate]);
 
   const logout = () => {
-    localStorage.removeItem(tokenKey);
-    navigate("/");
+    axios.post("/auth/logout", {}, { withCredentials: true })
+      .then(() => {
+        navigate("/");
+      })
+      .catch(err => {
+        console.error("Logout failed", err);
+        // Still navigate away even if backend call fails
+        navigate("/");
+      });
   };
 
   if (loading) return <div>Loading profile...</div>;
@@ -43,8 +45,11 @@ function Profile({ tokenKey = "access_token" }) {
 
   return (
     <div style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
-      <h2>Welcome, {profile.name || profile.email || "User"}</h2>
-      <pre>{JSON.stringify(profile, null, 2)}</pre>
+      <h2>Welcome, {user?.name || "User"}</h2>
+      <div><b>Name:</b> {user?.name || "-"}</div>
+      <div><b>Email:</b> {user?.email || "-"}</div>
+      <div><b>Cognito sub ID:</b> {user?.sub || "-"}</div>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
       <button
         onClick={logout}
         style={{
@@ -61,9 +66,5 @@ function Profile({ tokenKey = "access_token" }) {
     </div>
   );
 }
-
-Profile.propTypes = {
-  tokenKey: PropTypes.string,
-};
 
 export default Profile;

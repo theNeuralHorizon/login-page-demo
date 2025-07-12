@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Run MongoDB MCP Server",
+			"command": "npx",
+			"args": [
+				"-y",
+				"mongodb-mcp-server",
+				"--connectionString",
+				"mongodb+srv://kshitijbetwal:Qk4C5Al1p3kT4FFt@cluster0.wevzzpd.mongodb.net/"
+			],
+			"isBackground": true
+		}
+	]
+}
